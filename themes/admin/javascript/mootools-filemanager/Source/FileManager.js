@@ -125,8 +125,14 @@ var FileManager = new Class({
     this.browserLoader = new Element('div', {'class': 'loader', opacity: 0, tween: {duration: 300}});
     
     // switch the path, from clickable to input text
-    this.clickablePath = new Element('span', {'class': 'filemanager-dir'});
-    this.selectablePath = new Element('input',{'type':'text','class': 'filemanager-dir','readonly':'readonly'});
+// Partikule :
+// WHAT'S THIS ???
+// The user inputs just nothing... he select files, that's all !
+//
+//    this.clickablePath = new Element('span', {'class': 'filemanager-dir'});
+//    this.breadcrumb = new Element('span', {'class': 'filemanager-dir'});
+//    this.selectablePath = new Element('input',{'type':'text','class': 'filemanager-dir','readonly':'readonly'});
+/*
     this.pathTitle = new Element('a', {href:'#','class': 'filemanager-dir-title',text: this.language.dir}).addEvent('click',(function(e){
       e.stop();
       if(this.header.getElement('span.filemanager-dir')!= null) {
@@ -135,7 +141,8 @@ var FileManager = new Class({
       } else
         this.clickablePath.replaces(this.selectablePath);
     }).bind(this));
-    this.header.adopt(this.pathTitle,this.clickablePath);
+    this.header.adopt(this.pathTitle);
+*/
 
 // Altered by Partikule
 // Because the header is positionned -30px before the container, we hide it for the moment if th FM isn't standalone.
@@ -582,7 +589,7 @@ var FileManager = new Class({
   download: function(e) {
     e.stop();
     if (!this.Current) return;
-    window.open(this.options.url + '?event=download&file='+this.normalize(this.Current.retrieve('file').path));
+    window.open(this.options.url + '/download&file='+this.normalize(this.Current.retrieve('file').path));
   },
 
   create: function(e) {
@@ -607,7 +614,8 @@ var FileManager = new Class({
       },
       onConfirm: function() {
         new FileManager.Request({
-          url: self.options.url + '?event=create',
+//          url: self.options.url + '?event=create',
+          url: self.options.url + '/create',
           onRequest: self.browserLoader.set('opacity', 1),
           onSuccess: self.fill.bind(self),
           onComplete: self.browserLoader.fade(0),
@@ -670,7 +678,8 @@ var FileManager = new Class({
   destroy_noQasked: function(file) {
     var self = this;
 	new FileManager.Request({
-	  url: self.options.url + '?event=destroy',
+//	  url: self.options.url + '?event=destroy',
+	  url: self.options.url + '/destroy',
 	  data: {
 		file: file.name,
 		directory: self.Directory,
@@ -741,7 +750,8 @@ var FileManager = new Class({
       },
       onConfirm: (function(){
         new FileManager.Request({
-          url: self.options.url + '?event=move',
+//          url: self.options.url + '?event=move',
+          url: self.options.url + '/move',
           onRequest: self.browserLoader.set('opacity', 1),
           onSuccess: (function(j){
             if (!j || !j.name) return;
@@ -830,9 +840,12 @@ var FileManager = new Class({
 		this.Directory = j.path;
 		this.CurrentDir = j.dir;
 		
+
+		this.initFileInfoHeader(j);
+
 		// Fills the folder info
 //		if (!nofade && !this.onShow) this.fillInfo(j.dir);
-		this.fillInfo(j.dir)
+		this.fillInfo(j.dir);
 
 		// Empty the browser's files list
 		this.browser.empty();
@@ -848,8 +861,8 @@ var FileManager = new Class({
 			jsGET.set({'fmPath':j.path});
 		
 		// Path to the files
-		this.CurrentPath = this.root + this.Directory;
-		var text = [], pre = [];
+//		this.CurrentPath = this.root + this.Directory;
+//		var text = [], pre = [];
 		
 		// On error reported by backend, there WON'T be a JSON 'root' element at all times:
 		// TODO: how to handle that error condition correctly?
@@ -859,55 +872,6 @@ var FileManager = new Class({
 			return;
 		}
 		
-		// Website's rootpath
-		var rootPath = j.root.slice(0,-1).split('/');
-		rootPath.pop();
-
-ION.notification('', this.CurrentPath);
-
-		this.CurrentPath.split('/').each(function(folderName)
-		{
-			if (!folderName) return;
-			
-			pre.push(folderName);
-			var path = ('/'+pre.join('/')+'/').replace(j.root,'');
-			
-			// add non-clickable path
-			if(rootPath.contains(folderName))
-			{
-				text.push(new Element('span', {'class': 'icon',text: folderName}));
-				// add clickable path
-			} 
-			else
-			{
-				text.push(new Element('a',
-				{
-					'class': 'icon',
-					href: '#',
-					text: folderName
-				}).addEvent('click', function(e)
-				{
-					e.stop();
-					self.load(path);
-				}));
-			}
-			text.push(new Element('span', {text: ' / '}));
-		});
-		
-		text.pop();
-		text[text.length-1].addClass('selected').removeEvents('click').addEvent('click', function(e){e.stop();});
-		this.selectablePath.set('value','/'+this.CurrentPath);
-		this.clickablePath.empty().adopt(new Element('span', {text: '/ '}), text);
-
-// Partikule		
-// Add the path to the info header if standalone = false
-		if (this.standalone == false)
-		{
-			this.clickablePath.inject(this.head, 'bottom');
-		}
-// /Partikule		
-		if (!j.files) return;
-
 // Partikule
 // Add of the thumbnail list in the preview panel
 // Reasons : 
@@ -1203,7 +1167,8 @@ ION.notification('', this.CurrentPath);
     this.tips.attach(this.browser.getElements('img.browser-icon'));
   },
 
-  fillInfo: function(file) {
+  fillInfo: function(file)
+  {
     if (!file) file = this.CurrentDir;
     if (!file) return;
 
@@ -1256,7 +1221,7 @@ ION.notification('', this.CurrentPath);
 //    this.info.getElement('h2.filemanager-headline').setStyle('display', file.mime == 'text/directory' ? 'none' : 'block');
 */
 	
-	this.initFileInfoHeader(file);
+//	this.initFileInfoHeader(j);
 
 // /Partikule
 
@@ -1319,31 +1284,68 @@ ION.notification('', this.CurrentPath);
 	 * More informations for files, less for directory (more vertical space)
 	 *
 	 */
-	initFileInfoHeader: function (file)
+	initFileInfoHeader: function (j)
 	{
+		var file = j.dir;
+		var self = this;
+		
 		this.head.empty();
 		
 		this.head.adopt([
 	      new Element('img', {'class': 'filemanager-icon'}).set('src', file.icon),
     	  new Element('h1').set('text', file.name).set('title', file.name)
     	]);
+
+
+		// Breadcrumb : Path to the files
+		this.root = j.root;
+		this.CurrentPath = this.root + this.Directory;
+		var text = [], pre = [];
+		var rootPath = j.root.slice(0,-1).split('/');
+		rootPath.pop();
+
+		this.CurrentPath.split('/').each(function(folderName)
+		{
+			if (!folderName) return;
+
+			var path = ('/'+pre.join('/')+'/').replace(j.root,'');
+			
+			if( ! rootPath.contains(folderName))
+			{
+				text.push(new Element('a',
+				{
+					'class': 'icon',
+					href: '#',
+					text: folderName
+				}).addEvent('click', function(e)
+				{
+					e.stop();
+					self.load(path);
+				}));
+			}
+			text.push(new Element('span', {text: ' / '}));
+		});
 		
+		text.pop();
+		text[text.length-1].addClass('selected').removeEvents('click').addEvent('click', function(e){e.stop();});
+
+    	this.breadcrumb = new Element('span', {'class': 'filemanager-dir'}).adopt(text).inject(this.head);
+		
+
+
 		if (file.mime != 'text/directory')
 		{
 		    var size = this.size(file.size);
 
 			new Element('dl').adopt([
-			new Element('dt', {text: this.language.modified}),
-			new Element('dd', {'class': 'filemanager-modified'}).set('text', file.date),
-			new Element('dt', {text: this.language.type}),
-			new Element('dd', {'class': 'filemanager-type'}).set('text', file.mime),
-			new Element('dt', {text: this.language.size}),
-			new Element('dd', {'class': 'filemanager-size'}).set('text', !size[0] && size[1] == 'Bytes' ? '-' : (size.join(' ') + (size[1] != 'Bytes' ? ' (' + file.size + ' Bytes)' : '')))
+				new Element('dt', {text: this.language.modified}),
+				new Element('dd', {'class': 'filemanager-modified'}).set('text', file.date),
+				new Element('dt', {text: this.language.type}),
+				new Element('dd', {'class': 'filemanager-type'}).set('text', file.mime),
+				new Element('dt', {text: this.language.size}),
+				new Element('dd', {'class': 'filemanager-size'}).set('text', !size[0] && size[1] == 'Bytes' ? '-' : (size.join(' ') + (size[1] != 'Bytes' ? ' (' + file.size + ' Bytes)' : '')))
 			]).inject(this.head);
 		}
-		
-		
-		
 	},
 
 

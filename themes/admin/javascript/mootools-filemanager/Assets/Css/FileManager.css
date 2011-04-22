@@ -406,6 +406,13 @@ div.filemanager dd {
     white-space: nowrap;
     overflow: auto;
 }
+div.filemanager span.filemanager-dir
+{
+	width:auto;
+	display:block;
+	height:21px;
+	line-height: 21px;
+}
 div.filemanager div.margin { margin-left: 15px }
 div.filemanager a.filemanager-dir-title {
     padding-left: 10px;
@@ -434,6 +441,7 @@ div.filemanager span.filemanager-dir a.icon {
     -webkit-border-radius: 3px;
     -o-border-radius: 3px;
     border-radius: 3px;
+    display: inline;
 }
 
 /* not selectable path */
@@ -442,6 +450,7 @@ div.filemanager span.filemanager-dir span.icon {
     padding: 2px 5px 2px 20px;
     background: url("../Images/Icons/dir.png") 2px 0 no-repeat;
     color: #999;
+    display: inline;
 }
 div.filemanager span.filemanager-dir a.icon:hover {
     text-decoration: none;
