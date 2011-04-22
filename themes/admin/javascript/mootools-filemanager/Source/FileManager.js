@@ -198,7 +198,7 @@ var FileManager = new Class({
 
     this.toggleList = function(e) {
       if(e) e.stop();
-      $$('.filemanager-browserheader a').set('opacity',0.5);
+      $$('.filemanager-browserheader a.listType').set('opacity',0.5);
       if(!this.browserMenu_thumb.retrieve('set',false)) {
         this.browserMenu_list.store('set',false);
         this.browserMenu_thumb.store('set',true).set('opacity',1);
@@ -240,10 +240,10 @@ var FileManager = new Class({
 // Partikule : Thumb list in preview panel
     this.browserMenu_thumbList = new Element('a',{
         'id':'togggle_side_thumbs'
-      }).set('opacity',1).addEvent('click', function(){
+      }).addEvent('click', function(){
 		if (typeof jsGET !== 'undefined')
 			jsGET.clear();
-        self.load(self.Directory, true);
+        	self.load(self.Directory, true);
    		return self.deselect();
       });
 // /Partikule
