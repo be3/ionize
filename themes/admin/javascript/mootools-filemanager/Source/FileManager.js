@@ -250,18 +250,21 @@ var FileManager = new Class({
 
     this.info = new Element('div', {'class': 'filemanager-infos', opacity: 0}).inject(this.filemanager);
 
-    var head = new Element('div', {'class': 'filemanager-head'}).adopt([
+// Partikule
+// Added "this" to head
+    this.head = new Element('div', {'class': 'filemanager-head'}).adopt([
       new Element('img', {'class': 'filemanager-icon'}),
       new Element('h1')
     ]);
-	this.info.adopt(head);
+	this.info.adopt(this.head);
+// /Partikule
 
 // Partikule. Removed :
 // 1. To gain more vertical space for preview
 // 2. Because the user now this is info about the file
 // 3. Less is more :-)
 //    this.info.adopt([head, new Element('h2', {text: this.language.information})]);
-
+/*
     new Element('dl').adopt([
       new Element('dt', {text: this.language.modified}),
       new Element('dd', {'class': 'filemanager-modified'}),
@@ -269,8 +272,9 @@ var FileManager = new Class({
       new Element('dd', {'class': 'filemanager-type'}),
       new Element('dt', {text: this.language.size}),
       new Element('dd', {'class': 'filemanager-size'})
-    ]).inject(this.info);
-
+    ]).inject(this.head);
+//    ]).inject(this.info);
+*/
     this.preview = new Element('div', {'class': 'filemanager-preview'}).addEvent('click:relay(img.preview)', function(){
       self.fireEvent('preview', [this.get('src')]);
     });
@@ -859,6 +863,8 @@ var FileManager = new Class({
 		var rootPath = j.root.slice(0,-1).split('/');
 		rootPath.pop();
 
+ION.notification('', this.CurrentPath);
+
 		this.CurrentPath.split('/').each(function(folderName)
 		{
 			if (!folderName) return;
@@ -892,7 +898,14 @@ var FileManager = new Class({
 		text[text.length-1].addClass('selected').removeEvents('click').addEvent('click', function(e){e.stop();});
 		this.selectablePath.set('value','/'+this.CurrentPath);
 		this.clickablePath.empty().adopt(new Element('span', {text: '/ '}), text);
-		
+
+// Partikule		
+// Add the path to the info header if standalone = false
+		if (this.standalone == false)
+		{
+			this.clickablePath.inject(this.head, 'bottom');
+		}
+// /Partikule		
 		if (!j.files) return;
 
 // Partikule
@@ -1203,16 +1216,21 @@ var FileManager = new Class({
         jsGET.set({'fmFile':''});
     }
 
-    var size = this.size(file.size);
-    var icon = file.icon;
+// Partikule : Not more needed here
+//    var size = this.size(file.size);
+//    var icon = file.icon;
 
     this.switchButton();
 
-			
+// Partikule : Not more needed here
+// Replaced by this.initFileInfo
+/*			
     this.info.getElement('img').set({
       src: icon,
       alt: file.mime
     });
+*/
+// /Partikule
 
 // Partikule
 // Again with effects... could be better.....
@@ -1226,12 +1244,21 @@ var FileManager = new Class({
     this.fireHooks('cleanup');
     this.preview.empty();
 
+
+// Partikule
+// Modified this.info set to call of this.initFileInfoHeader
+/*
     this.info.getElement('h1').set('text', file.name);
     this.info.getElement('h1').set('title', file.name);
     this.info.getElement('dd.filemanager-modified').set('text', file.date);
     this.info.getElement('dd.filemanager-type').set('text', file.mime);
     this.info.getElement('dd.filemanager-size').set('text', !size[0] && size[1] == 'Bytes' ? '-' : (size.join(' ') + (size[1] != 'Bytes' ? ' (' + file.size + ' Bytes)' : '')));
 //    this.info.getElement('h2.filemanager-headline').setStyle('display', file.mime == 'text/directory' ? 'none' : 'block');
+*/
+	
+	this.initFileInfoHeader(file);
+
+// /Partikule
 
     if (file.mime=='text/directory') return;
 
@@ -1283,6 +1310,42 @@ var FileManager = new Class({
     }, this).send();
 
   },
+
+// Partikule
+
+	/**
+	 * Inits file-info headers
+	 * Because directory hasn't the same header than files.
+	 * More informations for files, less for directory (more vertical space)
+	 *
+	 */
+	initFileInfoHeader: function (file)
+	{
+		this.head.empty();
+		
+		this.head.adopt([
+	      new Element('img', {'class': 'filemanager-icon'}).set('src', file.icon),
+    	  new Element('h1').set('text', file.name).set('title', file.name)
+    	]);
+		
+		if (file.mime != 'text/directory')
+		{
+		    var size = this.size(file.size);
+
+			new Element('dl').adopt([
+			new Element('dt', {text: this.language.modified}),
+			new Element('dd', {'class': 'filemanager-modified'}).set('text', file.date),
+			new Element('dt', {text: this.language.type}),
+			new Element('dd', {'class': 'filemanager-type'}).set('text', file.mime),
+			new Element('dt', {text: this.language.size}),
+			new Element('dd', {'class': 'filemanager-size'}).set('text', !size[0] && size[1] == 'Bytes' ? '-' : (size.join(' ') + (size[1] != 'Bytes' ? ' (' + file.size + ' Bytes)' : '')))
+			]).inject(this.head);
+		}
+		
+		
+		
+	},
+
 
   showFunctions: function(icon,appearOn,opacityBefore,opacityAfter) {
     var opacity = [opacityBefore || 1, opacityAfter || 0];

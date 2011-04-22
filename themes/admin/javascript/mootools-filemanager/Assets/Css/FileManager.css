@@ -356,7 +356,7 @@ div.filemanager-infos {
     overflow: auto;
 }
 div.filemanager-head {
-    height: 32px;
+/*    height: 32px;*/
     overflow: hidden;
 }
 img.filemanager-icon {
