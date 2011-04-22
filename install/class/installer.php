@@ -1206,6 +1206,8 @@ class Installer
 				$migration_xml[] = 'migration_0.92_0.93.xml';
 				$migration_xml[] = 'migration_0.93_0.9.4.xml';
 				$migration_xml[] = 'migration_0.9.4_0.9.5.xml';
+				$migration_xml[] = 'migration_0.9.5_0.9.6.xml';
+				$migration_xml[] = 'migration_0.9.6_0.9.7.xml';
 			}
 	
 			
@@ -1235,6 +1237,8 @@ class Installer
 					$migration_xml[] = 'migration_0.92_0.93.xml';
 					$migration_xml[] = 'migration_0.93_0.9.4.xml';
 					$migration_xml[] = 'migration_0.9.4_0.9.5.xml';
+					$migration_xml[] = 'migration_0.9.5_0.9.6.xml';
+					$migration_xml[] = 'migration_0.9.6_0.9.7.xml';
 				}
 			}
 	
@@ -1261,6 +1265,8 @@ class Installer
 				{
 					$migration_xml[] = 'migration_0.93_0.9.4.xml';
 					$migration_xml[] = 'migration_0.9.4_0.9.5.xml';
+					$migration_xml[] = 'migration_0.9.5_0.9.6.xml';
+					$migration_xml[] = 'migration_0.9.6_0.9.7.xml';
 				}
 			}
 
@@ -1284,6 +1290,8 @@ class Installer
 				if ($migrate_from == true)
 				{
 					$migration_xml[] = 'migration_0.9.4_0.9.5.xml';
+					$migration_xml[] = 'migration_0.9.5_0.9.6.xml';
+					$migration_xml[] = 'migration_0.9.6_0.9.7.xml';
 				}
 			}
 
@@ -1306,8 +1314,19 @@ class Installer
 				if ($migrate_from == true)
 				{
 					$migration_xml[] = 'migration_0.9.5_0.9.6.xml';
+					$migration_xml[] = 'migration_0.9.6_0.9.7.xml';
 				}
 			}
+			
+			/*
+			 * From Ionize 0.9.6 : the table element does not exists
+			 *
+			 */
+			if ($this->db->table_exists('element') == false)
+			{
+				$migration_xml[] = 'migration_0.9.6_0.9.7.xml';
+			}
+			
 		}
 
 		
