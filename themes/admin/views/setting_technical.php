@@ -591,8 +591,8 @@
 				</dd>
 			</dl>
 		
-		
 		</div>
+		
 	</form>
 	
 	<!-- Admin URL -->
@@ -610,6 +610,22 @@
 	
 	</div>
 	
+	<!-- Encryption key -->
+	<h3 class="toggler1"><?=lang('encryption_key')?></h3>
+
+	<div class="element1">
+	
+		<!-- Current key -->
+		<dl class="last">
+			<dt>
+				<label for="form_antispam_key"></label>
+			</dt>
+			<dd>
+				<span><?= config_item('encryption_key') ?></span>
+			</dd>
+		</dl>
+	
+	</div>
 	
 
 	
