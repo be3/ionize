@@ -101,7 +101,7 @@ var FileManager = new Class({
     this.droppables = [];
     this.assetBasePath = this.options.assetBasePath.replace(/(\/|\\)*$/, '/');
     this.Directory = this.options.directory;
-    this.listType = 'list';
+    this.listType = 'filemanager-list';
     this.dialogOpen = false;
     this.usingHistory = false;
     this.fmShown = false;
@@ -210,7 +210,7 @@ var FileManager = new Class({
       } else {
         this.browserMenu_thumb.store('set',false);
         this.browserMenu_list.store('set',true).set('opacity',1);
-        this.listType = 'list';
+        this.listType = 'filemanager-list';
         if(typeof jsGET != 'undefined') jsGET.set('fmListType=list');
       }
       this.load(this.Directory);
@@ -653,7 +653,6 @@ var FileManager = new Class({
   },
 
   load: function(dir, nofade) {
-
     this.deselect();
 // Partikule : Effects
     if (!nofade && this.options.advancedEffects == true) this.info.fade(0);
@@ -1315,11 +1314,14 @@ var FileManager = new Class({
 		var rootPath = j.root.slice(0,-1).split('/');
 		rootPath.pop();
 
+		var pre = [];
+
 		this.CurrentPath.split('/').each(function(folderName)
 		{
 			if (!folderName) return;
+			pre.push(folderName);
 
-			var path = ('/'+pre.join('/')+'/').replace(j.root,'');
+			var path = (pre.join('/')+'/').replace(j.root,'');
 			
 			if( ! rootPath.contains(folderName))
 			{
@@ -1328,7 +1330,7 @@ var FileManager = new Class({
 					'class': 'icon',
 					href: '#',
 					text: folderName
-				}).addEvent('click', function(e)
+				}).addEvent('click', function(e, dir)
 				{
 					e.stop();
 					self.load(path);
@@ -1336,7 +1338,7 @@ var FileManager = new Class({
 			}
 			text.push(new Element('span', {text: ' / '}));
 		});
-		
+
 		text.pop();
 		text[text.length-1].addClass('selected').removeEvents('click').addEvent('click', function(e){e.stop();});
 

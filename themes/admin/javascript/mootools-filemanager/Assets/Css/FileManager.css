@@ -194,7 +194,9 @@ div.filemanager div.filemanager-browserscroll {
     height: 100%;
     overflow: auto;
 }
-div.filemanager div.filemanager-browserscroll li.list { height: 21px }
+div.filemanager div.filemanager-browserscroll li.filemanager-list {
+	height: 21px;
+}
 div.filemanager div.filemanager-browserscroll li.thumb { height: 54px }
 div.filemanager ul {
     margin: 0;

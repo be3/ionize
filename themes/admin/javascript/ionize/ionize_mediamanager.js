@@ -498,10 +498,6 @@ var IonizeMediaManager = new Class(
 
 					// Referer to ionizeMediaManager
 					var self = this;
-//					var baseUrl = this.baseUrl;
-//					var adminUrl = this.adminUrl;
-//					var themeUrl = this.themeUrl;
-					
 					
 					// First try to get a tokken : The tokken is only returned if the user is connected.
 					var xhr = new Request.JSON(

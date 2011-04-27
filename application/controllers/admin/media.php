@@ -95,8 +95,6 @@ class Media extends MY_admin
 
 				$this->output('filemanager/mootools_filemanager');
 				break;
-			
-				
 		}
 	}
 
