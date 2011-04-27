@@ -114,6 +114,14 @@
 		ALTER TABLE `category_lang` ADD `subtitle` VARCHAR( 255 ) NOT NULL ;
 	</query>
 	
+	<query>
+		DELETE FROM setting WHERE name='tinyblockformats';
+	</query>
+	<query>
+		INSERT INTO setting VALUES ('', 'tinyblockformats', 'p,h2,h3,h4,h5,pre', '');
+	</query>
+
+
 	<query>ALTER TABLE `article` COMMENT = '0.9.7';</query>
 	<query>ALTER TABLE `article_category` COMMENT = '0.9.7';</query>
 	<query>ALTER TABLE `article_comment` COMMENT = '0.9.7';</query>

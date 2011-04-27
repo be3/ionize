@@ -123,7 +123,10 @@ var FileManager = new Class({
     this.loader = new Element('div', {'class': 'loader', opacity: 0, tween: {duration: 300}}).inject(this.header);
     this.previewLoader = new Element('div', {'class': 'loader', opacity: 0, tween: {duration: 300}});
     this.browserLoader = new Element('div', {'class': 'loader', opacity: 0, tween: {duration: 300}});
-    
+
+// Partikule 	
+ 	this.pending_error_dialog = null;
+   
     // switch the path, from clickable to input text
 // Partikule :
 // WHAT'S THIS ???
@@ -402,7 +405,15 @@ var FileManager = new Class({
 		}
 		else
 		{
-			parent = (this.options.parentContainer != null) ? $(this.options.parentContainer) : this.container.getParent();
+			var parent = null;
+			if ((this.options.parentContainer) != null) 
+			{
+				parent = $(this.options.parentContainer);
+			}
+			else
+			{
+				parent = this.container.getParent();
+			}
 			if (parent)
 			{
 				parentSize = parent.getSize();
@@ -597,7 +608,7 @@ var FileManager = new Class({
     var input = new Element('input', {'class': 'createDirectory','autofocus':'autofocus'});
 
     var self = this;
-    new Dialog(this.language.createdir, {
+    new FileManager.Dialog(this.language.createdir, {
       language: {
         confirm: this.language.create,
         decline: this.language.cancel
@@ -688,7 +699,7 @@ var FileManager = new Class({
 	  onRequest: self.browserLoader.set('opacity', 1),
 	  onSuccess: function(j){
 		if (!j || j.content!='destroyed'){
-		  new Dialog(self.language.nodestroy, {language: {confirm: self.language.ok}, buttons: ['confirm']});
+		  new FileManager.Dialog(self.language.nodestroy, {language: {confirm: self.language.ok}, buttons: ['confirm']});
 		  return;
 		}
 
@@ -712,7 +723,7 @@ var FileManager = new Class({
 	  self.destroy_noQasked(file);
 	}
 	else {
-		new Dialog(this.language.destroyfile, {
+		new FileManager.Dialog(this.language.destroyfile, {
 		  language: {
 			confirm: this.language.destroy,
 			decline: this.language.cancel
@@ -733,7 +744,7 @@ var FileManager = new Class({
 
     if (file.mime != 'text/directory') name = name.replace(/\..*$/, '');
 
-    new Dialog(this.language.renamefile, {
+    new FileManager.Dialog(this.language.renamefile, {
       language: {
         confirm: this.language.rename,
         decline: this.language.cancel
@@ -1399,7 +1410,7 @@ var FileManager = new Class({
     for(var key in this.hooks[hook]) this.hooks[hook][key].apply(this, args);
     return this;
   },
-
+/*
   showError: function(text) {
     var errorText = text;
     var self = this;
@@ -1419,6 +1430,38 @@ var FileManager = new Class({
       onClose: this.onDialogClose.bind(this)
     });
   },
+*/
+	showError: function(text) {
+		var errorText = '' + text;
+
+		if (!errorText) {
+			errorText = this.language['backend.unidentified_error'];
+		}
+		errorText = errorText.substitute(this.language, /\\?\$\{([^{}]+)\}/g);
+
+		if (this.pending_error_dialog)
+		{
+			this.pending_error_dialog.appendMessage(errorText);
+		}
+		else
+		{
+			this.pending_error_dialog = new FileManager.Dialog(this.language.error, {
+				buttons: ['confirm'],
+				language: {
+					confirm: this.language.ok
+				},
+				content: [
+					errorText
+				],
+				onOpen: this.onDialogOpen.bind(this),
+				onClose: function()
+				{
+					this.pending_error_dialog = null;
+					this.onDialogClose();
+				}.bind(this)
+			});
+		}
+	},
 
   onRequest: function(){this.loader.set('opacity', 1);},
   onComplete: function(){this.loader.fade(0);},
@@ -1481,7 +1524,7 @@ Element.implement({
 
 });
 
-this.Dialog = new Class({
+FileManager.Dialog = new Class({
 
   Implements: [Options, Events],
 

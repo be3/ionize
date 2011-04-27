@@ -18,8 +18,6 @@ ION.append({
 	
 	mainpanel: 'mainPanel',
 	
-//	hbg: '#df8',
-	
 	/**
 	 * Reloads Ionize's interface
 	 *
@@ -113,3 +111,4 @@ Date.extend({
 		return Math.floor(new Date().getTime()/1000);
 	}
 });
+

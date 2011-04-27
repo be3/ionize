@@ -141,7 +141,7 @@ ION.ItemManager = new Class({
 					// Get the update table and do the jobs
 					if (responseJSON.update != null && responseJSON.update != '')
 					{
-						MUI.updateElements(responseJSON.update);
+						ION.updateElements(responseJSON.update);
 					}
 					
 					// Callbacks

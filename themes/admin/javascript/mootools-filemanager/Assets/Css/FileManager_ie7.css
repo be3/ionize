@@ -25,3 +25,6 @@ div.filemanager-details {
 #mootools-filemanager div.filemanager-menu label  {
 }
 
+div.dialog button {
+	width:60px;
+}

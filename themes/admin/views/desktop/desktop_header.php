@@ -1,6 +1,11 @@
 
 <div id="desktopBar">
 
+<?php
+
+	$lang_url = base_url().Settings::get_lang('current').'/'.Settings::get('admin_url');
+?>
+
 <div class="desktopTitlebarWrapper">
 	<div class="desktopTitlebar">
 		<h1 class="applicationTitle">ionize <?php echo($this->config->item('version')) ;?></h1>
@@ -51,7 +56,7 @@
 					<!-- Module Admin controllers links -->
 					<?php foreach($modules as $uri => $module) :?>
 						<?php if($this->connect->is($module['access_group'])) :?>
-							<li><a class="modules" id="<?= $uri ?>ModuleLink" href="module/<?= $uri ?>/<?= $uri ?>/index" title="<?= $module['name'] ?>"><?= $module['name'] ?></a></li>
+							<li><a class="navlink" id="<?= $uri ?>ModuleLink" href="module/<?= $uri ?>/<?= $uri ?>/index" title="<?= $module['name'] ?>"><?= $module['name'] ?></a></li>
 						<?php endif ;?>								
 					<?php endforeach ;?>
 					<?php if($this->connect->is('admins')) :?>
@@ -113,7 +118,7 @@
 			event.preventDefault();
 			
 			MUI.Content.update({
-				url: admin_url + this.getProperty('href'),
+				url: admin_url + ION.cleanUrl(this.getProperty('href')),
 				element: 'mainPanel',
 				title: this.getProperty('title')
 			});
@@ -136,6 +141,6 @@
 			scrollbars: false
 		});
 	});
-
+	
 </script>
 

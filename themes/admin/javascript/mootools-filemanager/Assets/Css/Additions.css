@@ -99,6 +99,7 @@ div.dialog button {
   -webkit-border-radius: 4px;
   border-radius: 4px;
 }
+
 div.dialog-engine-trident4 button, div.dialog-engine-trident5 button {
   padding: 0 .25em;
   overflow: visible;

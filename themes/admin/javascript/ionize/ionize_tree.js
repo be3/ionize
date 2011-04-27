@@ -97,7 +97,7 @@ ION.Tree = new Class({
 				// this.addArticleActionLinks(node);
 				
 				// Make the article name draggable
-				ION.addDragDrop(title, '.dropArticleInPage,.dropArticleAsLink,.folder', 'ION.dropArticleInPage,ION.dropArticleAsLink,ION.dropArticleInPage');
+				ION.addDragDrop(title, '.folder,.dropArticleAsLink,.dropArticleInPage', 'ION.dropArticleInPage,ION.dropArticleAsLink,ION.dropArticleInPage');
 			}
 			
 			// Mouse over effect

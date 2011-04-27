@@ -201,7 +201,7 @@ var IonizeMediaManager = new Class(
 				opacity: 0.5,
 				onStart: function(element, clone)
 				{
-					console.log(clone.getOffsetParent());
+//					console.log(clone.getOffsetParent());
 				},
 				onComplete: function()
 				{
@@ -537,8 +537,8 @@ var IonizeMediaManager = new Class(
 									parentContainer: 'filemanagerWindow_contentWrapper'
 								});
 
-								// Window creation
-								var options = self.getFilemanagerWindowOptions();
+								// MUI Window creation
+								var options = ION.getFilemanagerWindowOptions();
 								
 								options.content = filemanager.show();
 								
@@ -548,9 +548,6 @@ var IonizeMediaManager = new Class(
 								}
 								
 								self.window = new MUI.Window(options);
-								
-
-
 							}
 							else
 							{
@@ -565,9 +562,14 @@ var IonizeMediaManager = new Class(
 					ION.notification('error', 'No mode set for mediaManager');
 			}
 		}
-	},
+	}
 	
 	
+	
+});
+
+ION.append({
+
 	/**
 	 * Returns the Filemanager Mocha Window options
 	 *
@@ -600,9 +602,6 @@ var IonizeMediaManager = new Class(
 			id: 'filemanagerWindow',
 			title: 'Filemanager',
 			container: document.body,
-//			loadMethod: 'html',
-//			content: this.container,
-//			evalResponse: true,
 			width: wSize.width,
 			height: wSize.height,
 			y: 35,
@@ -626,11 +625,8 @@ var IonizeMediaManager = new Class(
 		
 		return options;
 	}
-	
-});
+/*
 
-
-ION.append({
 
 	openFilemanager: function(callback)
 	{
@@ -667,4 +663,5 @@ ION.append({
 			}
 		}, self).send();
 	}
+*/
 });

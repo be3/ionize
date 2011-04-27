@@ -70,6 +70,8 @@ ALTER TABLE `article_type` ADD `type_flag` TINYINT( 1 ) NOT NULL DEFAULT 0;
 
 ALTER TABLE `category_lang` ADD `subtitle` VARCHAR( 255 ) NOT NULL  default '';
 
+DELETE FROM setting WHERE name='tinyblockformats';
+INSERT INTO setting VALUES ('', 'tinyblockformats', 'p,h2,h3,h4,h5,pre', '');
 
 ALTER TABLE `article` COMMENT = '0.9.7';
 ALTER TABLE `article_category` COMMENT = '0.9.7';
