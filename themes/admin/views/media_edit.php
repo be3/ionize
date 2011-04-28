@@ -4,6 +4,15 @@
  * Modal window for Media metadata edition
  *
  */
+
+$pictureSize = NULL;
+
+if($type == 'picture')
+{
+	$pictureSize = @getimagesize($path);
+}
+
+
 ?>
 
 <!-- Media summary -->
@@ -98,9 +107,10 @@
 		
 			<?php if($type == 'picture') :?>
 				 - 
-				<?php if ($d = @getimagesize($path)) :?>
-					<?php echo($d['0']) ?>x<?php echo($d['1']) ?>
-				<?php endif ;?>
+				<?php if ( ! is_null($pictureSize)) :?>
+					<?php echo($pictureSize['0']) ?> x <?php echo($pictureSize['1']) ?> px
+					<br /><a id="imageCropLink<?= $id_media ?>">crop image</a>
+				<?php endif ;?> 
 			<?php endif ;?>
 		</dd>		
 	
@@ -376,5 +386,22 @@
 	 *
 	 */
 	new TabSwapper({tabsContainer: 'mediaTab<?= $UNIQ ?>', sectionsContainer: 'mediaTabContent<?= $UNIQ ?>', selectedClass: 'selected', deselectedClass: '', tabs: 'li', clickers: 'li a', sections: 'div.tabcontent<?= $UNIQ ?>' });
+
+	
+	/**
+	 * Opens the crop window if picture
+	 *
+	 */
+	<?php if ( ! is_null($pictureSize)) :?>
+	
+	if ($('imageCropLink<?= $id_media ?>'))
+	{
+		$('imageCropLink<?= $id_media ?>').addEvent('click', function()
+		{
+			// Should be : 'maximizable': true, 
+			ION.dataWindow('ImageCrop<?= $id_media ?>', 'Crop', 'media/get_crop', {width:640, height:480}, {'id_media':'<?= $id_media ?>', 'path':'<?= $path ?>'}});
+		})
+	}
+	<?php endif; ?>
 
 </script>

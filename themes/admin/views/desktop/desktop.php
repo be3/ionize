@@ -42,6 +42,10 @@
 <link type="text/css" rel="stylesheet" href="<?= theme_url() ?>javascript/SortableTable/SortableTable.css" />
 <script type="text/javascript" src="<?= theme_url() ?>javascript/SortableTable/SortableTable.js"></script>
 
+<!-- CwCrop -->
+<script type="text/javascript" src="<?= theme_url() ?>javascript/cwcrop/ysr-crop.js"></script>
+<link type="text/css" rel="stylesheet" href="<?= theme_url() ?>javascript/cwcrop/ysr-crop.css" />
+
 
 <!-- Base URL & languages translations available for javascript -->
 <script type="text/javascript">
