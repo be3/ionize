@@ -56,15 +56,16 @@ ION.ItemManager = new Class({
 		{
 			var list = this.options.list;
 			if (!list) list = this.options.container;
-		
+			
 			var self = this;
 
 			// Init the sortable 
 			this.sortables = new Sortables(list, {
-				constrain: true,
 				revert: true,
 				handle: '.drag',
 				clone: true,
+				constrain: true,
+//				container: this.options.container,
 				opacity: 0.5,
 				onStart: function(element, clone)
 				{
