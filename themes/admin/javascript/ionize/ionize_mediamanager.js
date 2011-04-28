@@ -199,20 +199,17 @@ var IonizeMediaManager = new Class(
 				clone: true,
 				container: container,
 				opacity: 0.5,
-				onStart: function(element, clone)
-				{
-//					console.log(clone.getOffsetParent());
-				},
 				onComplete: function()
 				{
 					var serialized = this.serialize(0, function(element, index) 
 					{
 						// Get the ID list by replacing 'type_' by '' for each item
 						// Example : Each picture item is named 'picture_ID' where 'ID' is the media ID
-						if (element.getProperty('id') != null)
-							return element.getProperty('id').replace(responseJSON.type + '_','');
+						if (element.id != '')
+						{
+							return (element.id).replace(responseJSON.type + '_','');
+						}
 					});
-					
 					// Items sorting
 					self.sortItemList(responseJSON.type, serialized);
 				}
@@ -252,18 +249,26 @@ var IonizeMediaManager = new Class(
 		var container = $(this.containers.get(type))
 		var sortableOrder = container.retrieve('sortableOrder');
 
+		// Remove "undefined" from serialized. Undefined comes from the clone, which isn't removed before serialize.
+		var serie = new Array();
+		serialized.each(function(item)
+		{
+			if (typeOf(item) != 'null')
+				serie.push(item);
+		});
+
 		// If current <> new ordering : Save it ! 
-		if (sortableOrder.toString() != serialized.toString() ) 
+		if (sortableOrder.toString() != serie.toString() ) 
 		{
 			// Store the new ordering
-			container.store('sortableOrder', serialized);
+			container.store('sortableOrder', serie);
 
 			// Save the new ordering
 			var myAjax = new Request.JSON(
 			{
 				url: this.adminUrl + 'media/save_ordering/' + this.parent + '/' + this.idParent,
 				method: 'post',
-				data: 'order=' + serialized,
+				data: 'order=' + serie,
 				onSuccess: function(responseJSON, responseText)
 				{
 					MUI.hideSpinner();

@@ -17,8 +17,6 @@ ION.Tree = new Class({
 		this.setOptions(options);
 		this.element = element;
 		
-//		var options = this.options;
-		
 		this.mainpanel = ION.mainpanel;
 
 		// Array of itemManagers
@@ -322,7 +320,7 @@ ION.Tree = new Class({
 			container.adopt(li);
 			container.inject(page, 'bottom');
 			
-			// Article Manager
+			// Article Manager : Sortables
 			container.store('articleManager', new ION.ArticleManager({ container: 'articleContainer' + id_page , id_parent: id_page}));
 			
 			if ( ! (parent.hasClass('f-open'))) { container.setStyle('display', 'none');	}
@@ -362,7 +360,6 @@ ION.Tree = new Class({
 
 		/* Action element */
 		var iconOnline = icon.clone().adopt(new Element('a', {'class': 'status ' + status + ' page' + id, 'rel': id}));
-//		var iconDelete = icon.clone().adopt(new Element('a', {'class': 'delete', 'rel': id}));
 		var iconArticle = icon.clone().adopt(new Element('a', {'class': 'addArticle article', 'rel': id}));
 		action.adopt(iconOnline, iconArticle);
 		this.addPageActionLinks(action);
@@ -443,8 +440,6 @@ ION.Tree = new Class({
 
 ION.append({
 
-
-	
 
 	/**
 	 * Add tree element to cookie

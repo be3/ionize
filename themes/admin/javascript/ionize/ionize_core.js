@@ -12,8 +12,11 @@ ION.append = function(hash){
 
 ION.append({
 	
+	/**
+	 * URLs used by depending classes
+	 *
+	 */
 	baseUrl: base_url,
-	
 	adminUrl: admin_url,
 	
 	mainpanel: 'mainPanel',
