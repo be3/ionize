@@ -63,7 +63,7 @@ div.filemanager div.filemanager-menu {
     bottom: 0;
     line-height: 30px;
     border-top: 1px solid #bebebe;
-    background: url("../Images/menu.png") repeat-x;
+    background: url("../Images/menu.png") repeat;
     /*  : ;
     box-shadow: rgba(0, 0, 0, 0.3) 2px 0 5px;
     -moz-box-shadow: rgba(0, 0, 0, 0.3) 1px -2px 5px -2px;
@@ -74,6 +74,13 @@ div.filemanager div.filemanager-menu {
     -webkit-border-radius: 0 0 8px 0;
     -o-border-radius: 0 0 8px 0;*/
 }
+
+/* Partikule : Filemanager Upload Form */
+
+div.filemanager div.filemanager-menu form{
+/*	width: auto;*/
+}
+
 
 /*
 div.filemanager button {

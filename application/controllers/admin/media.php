@@ -127,8 +127,11 @@ class Media extends MY_admin
 			'destroy' => TRUE,
 			'download' => FALSE,
 			'thumbnailSize' => (Settings::get('media_thumb_size') !='') ? Settings::get('media_thumb_size') : 120,
-			'pictureMaxWidth' => (Settings::get('picture_max_width') !='') ? Settings::get('picture_max_width') : FALSE,
-			'pictureMaxHeight' => (Settings::get('picture_max_height') !='') ? Settings::get('picture_max_height') : FALSE,
+			
+			'maxImageDimension' => array(
+				'width' => (Settings::get('picture_max_width') !='') ? Settings::get('picture_max_width') : 1024, 
+				'height' => (Settings::get('picture_max_height') !='') ? Settings::get('picture_max_height') : 768
+			),
 			'maxUploadSize' => intval(substr(ini_get('upload_max_filesize'), 0, -1)) * 1024 * 1024,
 			'filter' => 'image/,audio/,video/'
 		);

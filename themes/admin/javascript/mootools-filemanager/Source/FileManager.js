@@ -706,6 +706,10 @@ var FileManager = new Class({
 		file.element.getParent().fade(0).get('tween').chain(function(){
 		  self.deselect(file.element);
 		  this.element.destroy();
+// Partikule
+		  if (file.mime != 'text/directory')		  
+		  	self.load(self.Directory);
+// / Partikule
 		});
 	  },
 	  onComplete: self.browserLoader.fade(0),
@@ -1618,7 +1622,14 @@ FileManager.Dialog = new Class({
       }).bind(this));
 
       document.removeEvent('scroll', this.bound.scroll).removeEvent('resize', this.bound.scroll).removeEvent('keyup', this.bound.keyesc);
-  }
+  },
+
+	appendMessage: function(text) {
+		this.el.adopt([
+			typeOf(text) === 'string' ? new Element('div', {text: text}) : text
+		]);
+	}
+
 
 });
 

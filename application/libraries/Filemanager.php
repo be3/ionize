@@ -138,7 +138,7 @@ class FileManager
       'mimeTypesPath' => MTFM_PATH . '/Filemanager/MimeTypes.ini',
       'dateFormat' => 'j M Y - H:i',
       'maxUploadSize' => 2600 * 2600 * 3,
-      'maxImageSize' => 1024,
+	  'maxImageDimension' => array('width' => 1024, 'height' => 768),
       'upload' => true,
       'destroy' => true,
       'create' => true,
@@ -973,7 +973,9 @@ class FileManager
       if (!Upload::exists('Filedata'))
         throw new FileManagerException('nofile');
 
-      $dir = $this->getDir(!empty($this->get['directory']) ? $this->get['directory'] : null);
+//      $dir = $this->getDir(!empty($this->get['directory']) ? $this->get['directory'] : null);
+	  $dir = $this->getDir($this->post['directory']);
+
       $file = $this->getName($_FILES['Filedata']['name'], $dir);
       if (!$file)
         throw new FileManagerException('nofile');
@@ -1004,8 +1006,7 @@ class FileManager
         'extension' => $fi['extension'],
         'size' => $_FILES['Filedata']['size'],
         'maxsize' => $this->options['maxUploadSize'],
-//        'mimes' => $this->getAllowedMimeTypes(),
-        'mimes' => $this->getAllowedMimeTypes($mime_filter),
+        'mimes' => $this->getAllowedMimeTypes(),
         'ext2mime_map' => $this->getMimeTypeDefinitions(),
         'chmod' => $this->options['chmod'] & 0666   // security: never make those files 'executable'!
       );
@@ -1023,13 +1024,13 @@ class FileManager
        *       Having uploaded such huge images, a developer/somebody can always go in later and up the memory limit if the site admins
        *       feel it is deserved. Until then, no thumbnails of such images (though you /should/ be able to milkbox-view the real thing!)
        */
-      if (FileManagerUtility::startsWith($this->getMimeType($file), 'image/') && !empty($this->get['resize']))
+      if (FileManagerUtility::startsWith($this->getMimeType($file), 'image/') && !empty($this->post['resize']))
       {
         $img = new Image($file);
         $size = $img->getSize();
         // Image::resize() takes care to maintain the proper aspect ratio, so this is easy:
-        if ($size['width'] > $this->options['maxImageSize'] || $size['height'] > $this->options['maxImageSize'])
-          $img->resize($this->options['maxImageSize'], $this->options['maxImageSize'])->save();
+        if ($size['width'] > $this->options['maxImageDimension']['width'] || $size['height'] > $this->options['maxImageDimension']['height'])
+          $img->resize($this->options['maxImageDimension']['width'], $this->options['maxImageDimension']['height'])->save();
         unset($img);
       }
 

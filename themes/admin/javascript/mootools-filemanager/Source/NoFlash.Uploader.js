@@ -28,7 +28,7 @@ FileManager.implement({
 		upload: true,
 
 		// Is there a useful reason to have this different from propagateData... dubious :-/
-		uploadAuthData: {}
+		uploadAuthData: {} 
 	},
 
 	hooks: {
@@ -77,7 +77,7 @@ FileManager.implement({
 			form_el.adopt(fileinput);
 		}
 		return form_el;
-	}
+	},
 
 
 	startUpload: function()
@@ -94,39 +94,52 @@ FileManager.implement({
 			this._dummyframe = null;
 		}
 
-		var mfm = this;
+		var self = this;
+		
 		var f = (new Element('form'))
-			.set('action', this.options.url + 'event=upload')
+//			.set('action', this.options.url + 'event=upload')
+			.set('action', this.options.url + '/upload')
 			.set('method', 'post')
 			.set('enctype', 'multipart/form-data')
 			.set('target', 'dummyframe')
 			.setStyles({ 'float': 'left', 'padding-left': '3px', 'display':'block'});
 
+/*
 		var data = Object.merge({},
 			(this.options.propagateType == 'POST' ? this.options.propagateData : {}),
 			(this.options.uploadAuthData || {})
 		);
 		Object.each(data, function(v, k){
-			f.adopt((new Element('input')).set({type: 'hidden', name: k, value: v}));
 		});
+*/
+		f.adopt((new Element('input')).set({type: 'hidden', name: 'uploadAuthData', value: this.options.uploadAuthData}));
+		f.adopt((new Element('input')).set({type: 'hidden', id:'filemanager_upload_directory', name: 'directory', value: this.normalize(this.Directory)}));
+		f.adopt((new Element('input')).set({type: 'hidden', id:'filemanager_upload_resize', name: 'resize', value: ((this.label && this.label.getElement('.checkbox').hasClass('checkboxChecked')) ? 1 : 0) }));
 
-		mfm.make_file_input(f);
+
+		this.make_file_input(f);
 
 		f.inject(this.menu, 'top');
+		this.menu.setStyle('height', '60px');
 
 		var uploadButton = this.addMenuButton('upload').addEvents({
 			click:  function(e) {
 				e.stop();
-				mfm.browserLoader.set('opacity', 1);
-				f.action = mfm.options.url
-					+ (mfm.options.url.indexOf('?') == -1 ? '?' : '&') + Object.toQueryString(Object.merge({}, (self.options.propagateType == 'GET' ? self.options.propagateData : {}), {
+				self.browserLoader.set('opacity', 1);
+				$('filemanager_upload_directory').value = self.normalize(self.Directory);
+				$('filemanager_upload_resize').value = ((this.label && this.label.getElement('.checkbox').hasClass('checkboxChecked')) ? 1 : 0);
+				
+				
+				/*
+				f.action = self.options.url
+					+ (self.options.url.indexOf('?') == -1 ? '?' : '&') + Object.toQueryString(Object.merge({}, (self.options.propagateType == 'GET' ? self.options.propagateData : {}), {
 						event: 'upload',
-						directory: self.normalize(mfm.Directory),
-						filter: mfm.options.filter,
+						directory: self.normalize(self.Directory),
+						filter: self.options.filter,
 						resize: ((this.label && this.label.getElement('.checkbox').hasClass('checkboxChecked')) ? 1 : 0),
 						reportContentType: 'text/plain'        // Safer for iframes: the default 'application/json' mime type would cause FF3.X to pop up a save/view dialog!
 					}));
-
+				*/
 				f.submit();
 			},
 			mouseenter: function(){
@@ -160,7 +173,7 @@ FileManager.implement({
 
 		this._dummyframe.addEvent('load', function()
 		{
-			mfm.browserLoader.fade(0);
+			self.browserLoader.fade(0);
 
 			try
 			{
@@ -200,9 +213,9 @@ FileManager.implement({
 				}
 				else if (response)
 				{
-					mfm.onShow = true; // why exactly do we need to set this, what purpose does the default of NOT preselecting the thing we asked to preselect have?
+					self.onShow = true; // why exactly do we need to set this, what purpose does the default of NOT preselecting the thing we asked to preselect have?
 
-					mfm.load(mfm.Directory.replace(/\/$/, ''), response.name ? response.name : null);
+					self.load(mfm.Directory.replace(/\/$/, ''), response.name ? response.name : null);
 				}
 				else
 				{
@@ -213,10 +226,10 @@ FileManager.implement({
 			{
 				// Maybe this.contentDocument.documentElement.innerText isn't where we need to look?
 				// debugger; console.log(this);
-				mfm.load(mfm.Directory);
+				self.load(self.Directory);
 			}
 
-			mfm.make_file_input(f);
+			self.make_file_input(f);
 		});
 	}
 });

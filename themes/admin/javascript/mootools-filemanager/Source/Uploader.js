@@ -21,7 +21,9 @@ FileManager.implement({
 		upload: true,
 		uploadAuthData: {},            // deprecated; use FileManager.propagateData instead!
 		uploadTimeLimit: 260,
-		uploadFileSizeMax: 2600 * 2600 * 25
+		uploadFileSizeMax: 2600 * 2600 * 25,
+		propagateType: 'POST',
+		propagateData: {}                // extra query parameters sent with every request to the backend
 	},
 
 	hooks: {
@@ -104,14 +106,24 @@ FileManager.implement({
 				this.parent(base, data);
 
 				//if (typeof console !== 'undefined' && console.log) console.log('Uploader: setOptions');
-				this.setOptions({
+				this.setOptions(
+				{
+/*
+					url: self.options.url + '/upload',
+					data: {
+						directory: self.normalize(self.Directory),													// Dir to upload the file
+						uploadAuthData: self.options.uploadAuthData,												// Authentication data
+						resizeImages: (self.options.resizeImages && resizer.hasClass('checkboxChecked') ? 1 : 0)	// Resize ? Not used for the moment.
+					}
+*/
 					//data: Object.merge({}, base.options.data, self.options.uploadAuthData),
-					url: self.options.url + (self.options.url.indexOf('?') == -1 ? '?' : '&') + Object.toQueryString(Object.merge({}, (self.options.propagateType == 'GET' ? self.options.propagateData : {}), {
+//					url: self.options.url + (self.options.url.indexOf('?') == -1 ? '?' : '&') + Object.toQueryString(Object.merge({}, (self.options.propagateType == 'GET' ? self.options.propagateData : {}),
+					url: self.options.url + '/upload',
 						event: 'upload',
 						directory: self.Directory,
 						filter: self.options.filter,
 						resize: self.options.resizeImages && resizer.hasClass('checkboxChecked') ? 1 : 0
-					}))
+					
 				});
 			},
 
@@ -268,7 +280,9 @@ FileManager.implement({
 
 		//if (typeof console !== 'undefined' && console.log) console.log('Uploader: SWF init');
 		this._lastFileUploaded = null;
-		this.swf = new Swiff.Uploader({
+		
+		this.swf = new Swiff.Uploader(
+		{
 			id: 'SwiffFileManagerUpload',
 			path: this.assetBasePath + 'Swiff.Uploader.swf',
 			queued: false,
