@@ -17,7 +17,6 @@ var xhr = new Request.JSON(
 		{
 			var filemanager = new FileManager({
 				baseURL: base_url,
-				directory:'files',
 				url: admin_url + 'media/filemanager',
 				assetBasePath: theme_url + 'javascript/mootools-filemanager/Assets',
 				language: Lang.get('current'),

@@ -526,7 +526,6 @@ var IonizeMediaManager = new Class(
 								// fileManager init
 								filemanager = new FileManager({
 									baseURL: base_url,
-									directory:'files',
 									url: admin_url + 'media/filemanager',
 									assetBasePath: theme_url + 'javascript/mootools-filemanager/Assets',
 									language: Lang.get('current'),

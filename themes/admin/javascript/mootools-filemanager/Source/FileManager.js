@@ -454,7 +454,7 @@ var FileManager = new Class({
 
   hashHistory: function(vars) { // get called from the jsGET listener
     this.storeHistory = false;
-    //console.log(vars);
+
     if(vars.changed['fmPath'] == '')
       vars.changed['fmPath'] = '/';
 
@@ -498,6 +498,7 @@ var FileManager = new Class({
         else
           this.browserMenu_list.store('set',true).set('opacity',1);
       }
+
       if(jsGET.get('fmPath') != null) this.Directory = jsGET.get('fmPath');
       jsGET.set({'fmID':this.ID,'fmPath':this.Directory});
       this.hashListenerId = jsGET.addListener(this.hashHistory,false,this);
@@ -1187,7 +1188,6 @@ var FileManager = new Class({
     if (!file) return;
 
     // set file history
-    //console.log(this.storeHistory);
     if(typeof jsGET != 'undefined' && this.storeHistory) {
       if(file.mime != 'text/directory')
         jsGET.set({'fmFile':file.name});
