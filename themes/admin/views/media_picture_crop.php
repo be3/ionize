@@ -41,7 +41,7 @@ window.addEvent("domready", function()
 		maxsize: {x: <?= $size['width'] ?>, y:<?= $size['height'] ?>},
 		onCrop: function(values)
 		{
-			ION.JSON('media/crop', {'path':'<?= $path ?>', 'coords': values})
+			ION.JSON('media/crop', {'path':'<?= $path ?>', 'coords': values, 'id_media': '<?= $id_media ?>'});
 		}
 	});
 });

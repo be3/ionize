@@ -290,10 +290,11 @@ class Media extends MY_admin
 	}
 
 
-	function get_crop()
+	function get_crop($id_media)
 	{
-		$id_media = $this->input->post('id_media');
-		$path = $this->input->post('path');
+		$picture = $this->media_model->get($id_media);
+		
+		$path = $picture['path'];
 
 		$size = @getimagesize(FCPATH.$path);
 		$size = array
@@ -307,7 +308,6 @@ class Media extends MY_admin
 		$this->template['size'] = $size;
 		
 		$this->output('media_picture_crop');	
-		
 	}
 
 	
@@ -315,6 +315,7 @@ class Media extends MY_admin
 	{
 		$path = $this->input->post('path');
 		$coords = $this->input->post('coords');
+		$id_media = $this->input->post('id_media');
 		
 		$path = FCPATH.$path;
 		
@@ -352,6 +353,15 @@ class Media extends MY_admin
 				'fn' => 'ION.notification',
 				'args' => array('success', lang('ionize_message_operation_ok'))
 			);
+
+			$this->callback[] = array(
+				'fn' => 'ION.updateElement',
+				'args' => array(
+					'element'=> 'wImageCrop'.$id_media.'_content',
+					'url' => 'media/get_crop/' . $id_media
+				)
+			);
+
 		}
 		
 		$this->response();
