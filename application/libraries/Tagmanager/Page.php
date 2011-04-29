@@ -573,7 +573,7 @@ class TagManager_Page extends TagManager
 
 		// Here, we are in an article list configuration : More than one article, page display
 		// If the article-list view exists, we will force the article to adopt this view.
-		// Not so much clean to do that in the get_article funtion but for the moment just helpfull...
+		// Not so much clean to do that in the get_article function but for the moment just helpfull...
 		if (count($articles) > 1 && $keep_view == FALSE)
 		{
 			if ( ! empty($tag->locals->page['article_list_view']) OR $list_view !== FALSE )
@@ -982,6 +982,8 @@ class TagManager_Page extends TagManager
 
 		// Get the obj
 		$obj = isset($tag->locals->{$from}) ? $tag->locals->{$from} : NULL;
+
+
 		
 		// things to count
 		$items = array();

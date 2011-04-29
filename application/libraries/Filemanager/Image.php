@@ -451,7 +451,7 @@ class Image {
 	 * @param int $quality the amount of lossy compression to apply to the saved file
 	 * @return Image object
 	 */
-	public function process($ext = null, $file = null, $quality = 100){
+	public function process($ext = null, $file = null, $quality = 90){
 		if(empty($this->image)) return $this;
 
 		if(!$ext) $ext = $this->meta['ext'];

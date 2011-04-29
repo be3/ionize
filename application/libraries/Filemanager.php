@@ -1331,34 +1331,49 @@ class FileManager
   protected function getThumb($file)
   {
     $thumb = $this->generateThumbName($file);
-    $thumbPath = FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . $thumb;
+//    $thumbPath = FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . $thumb;
+	$dir = (substr($this->post['directory'], -1) == '/') ? $this->post['directory'] : $this->post['directory'].'/';
+    $thumbPath = FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . $dir . $thumb;
+
     if (is_file($thumbPath))
-      return $thumb;
-    elseif(is_file(FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . basename($file)))
+      return $dir . $thumb;
+//    elseif(is_file(FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . basename($file)))
+    elseif(is_file(FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . $dir . basename($file)))
       return basename($file);
     else
+    {
       return $this->generateThumb($file,$thumbPath);
+     }
   }
 
   protected function generateThumbName($file)
   {
-    return 'thumb_'.str_replace('.','_',basename($file)).'.png';
+	return str_replace($this->basedir, '', basename($file));
+//    return str_replace('.','_',basename($file)).'.png';
   }
 
   protected function generateThumb($file,$thumbPath)
   {
+	$filename = pathinfo($file, PATHINFO_BASENAME);
+	$thumbDir = str_replace($filename, '', $thumbPath);
+	$dir = (substr($this->post['directory'], -1) == '/') ? $this->post['directory'] : $this->post['directory'].'/';
+
+	if ( ! is_dir($thumbDir)) mkdir($thumbDir, $this->options['chmod'], true);
+
     $img = new Image($file);
 // Partikule : Using the thumbSize to generate thumb
 //    $img->resize(250,250,true,false)->process('png',$thumbPath); // TODO: save as lossy / lower-Q jpeg to reduce filesize?
-    $img->resize($this->options['thumbnailSize'],$this->options['thumbnailSize'],true,false)->process('png',$thumbPath); // TODO: save as lossy / lower-Q jpeg to reduce filesize?
+//    $img->resize($this->options['thumbnailSize'],$this->options['thumbnailSize'],true,false)->process('png',$thumbPath); // TODO: save as lossy / lower-Q jpeg to reduce filesize?
+    $img->resize($this->options['thumbnailSize'],$this->options['thumbnailSize'],true,false)->save($thumbPath); // TODO: save as lossy / lower-Q jpeg to reduce filesize?
     unset($img);
-    return basename($thumbPath);
+    return $dir . $filename;
   }
 
   protected function deleteThumb($file)
   {
     $thumb = $this->generateThumbName($file);
-    $thumbPath = FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . $thumb;
+//    $thumbPath = FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . $thumb;
+    $thumbPath = FileManagerUtility::getSiteRoot() . $this->options['thumbnailPath'] . $this->post['directory'] . $thumb;
     if(is_file($thumbPath))
       return @unlink($thumbPath);
     return true;   // when thumbnail does not exist, say it is succesfully removed: all that counts is it doesn't exist anymore when we're done here.
