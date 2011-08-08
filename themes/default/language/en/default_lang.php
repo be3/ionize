@@ -1,0 +1,6 @@
+<?php
+
+$lang['sdsd'] = "sdsd
+";
+
+?>

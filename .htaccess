@@ -1,7 +1,9 @@
 RewriteEngine On
 
-# The RewriteBase / instruction is commented. Remove the "#" to uncomment
+# The "RewriteBase /" instruction is commented. Remove the "#" to uncomment
 # RewriteBase /
+
+# This should not be modified
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
